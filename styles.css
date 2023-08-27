@@ -1,59 +1,154 @@
+/* styles.css */
+
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%); /* Soft beige gradient background */
 }
 
-.container {
-    text-align: center;
-    background: linear-gradient(135deg, #FF9A8B, #FF6B6B);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    margin: 0 auto;
-    color: #fff;
+.game-container {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, #a1ffce 0%, #f2ffcb 100%);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #333;
-    background-color: #f9f9f9;
+h1 {
+  margin-bottom: 20px;
+  color: #fe6d8e; /* Beautiful pink color */
+  font-size: 36px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 6px;
+  margin: 30px auto;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  font-size: 36px;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.cell:hover {
+  background-color: #e0e0e0;
+}
+
+.scores {
+  text-align: center;
+  margin-top: 30px;
 }
 
 button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #0056b3;
+.button:hover {
+  background-color: #0056b3;
 }
 
-#message {
-    margin-top: 15px;
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 24px;
+.player-name {
+  font-weight: bold;
+  color: #4CAF50; /* Green color for player names */
 }
 
-#timer {
-    margin-top: 15px;
-    color: #fff;
-    font-size: 16px;
+/* Additional Styling */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+input[type="text"] {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.alert {
+  background-color: rgba(255, 209, 223, 0.5);
+  border: 1px solid #ff66a3;
+  color: #ff66a3;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+
+/* Add this to your existing CSS */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, rgba(30, 110, 52, 0.8) 0%, rgba(17, 115, 46, 0.8) 100%);
+  border-radius: 15px;
+  padding: 30px;
+  font-size: 30px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 80%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center align content vertically */
+  gap: 20px;
+  border: 4px dashed rgba(255, 255, 255, 0.5); /* Dashed white border with transparency */
+  position: relative;
+}
+
+
+
+#playAgainButton {
+  padding: 12px 24px;
+  font-size: 18px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: auto; /* Push the button to the bottom */
+}
+
+#playAgainButton:hover {
+  background-color: #45a049;
+}
+
