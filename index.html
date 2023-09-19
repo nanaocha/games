@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Space Shooter Game</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Drawing Game for Kids</title>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
-    <script src="game.js"></script>
+  <div id="canvas-container">
+    <canvas id="drawing-canvas"></canvas>
+    <div id="color-palette">
+      <div class="color" style="background-color: red;"></div>
+      <div class="color" style="background-color: blue;"></div>
+      <div class="color" style="background-color: green;"></div>
+      <div class="color" style="background-color: yellow;"></div>
+      <!-- Add more color options here -->
+    </div>
+    <div id="tools">
+      <button class="tool" id="pen-tool">Pen</button>
+      <button class="tool" id="brush-tool">Brush</button>
+      <button class="tool" id="eraser-tool">Eraser</button>
+    </div>
+    <button id="clear-button">Clear Canvas</button>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,135 +1,72 @@
-let currentPlayer = "X";
-let cells = document.querySelectorAll(".cell");
-let board = ["", "", "", "", "", "", "", "", ""];
-let playerXScore = 0;
-let playerOScore = 0;
-let playerXName = "Player 1";
-let playerOName = "Player 2";
-let letsPlayButton = document.getElementById("letsPlayButton");
-let playerNameInputs = document.querySelectorAll(".player-name-input");
-let namesContainer = document.getElementById("namesContainer");
-let playerONameContainer = document.getElementById("playerONameContainer");
-let boardContainer = document.getElementById("board");
-let scoresContainer = document.getElementById("scores");
+const canvas = document.getElementById("drawing-canvas");
+const ctx = canvas.getContext("2d");
+const colors = document.querySelectorAll(".color");
+const clearButton = document.getElementById("clear-button");
+const tools = document.querySelectorAll(".tool");
+let isDrawing = false;
+let isErasing = false;
 
-function startGame() {
-  playerXName = document.getElementById("playerXName").value || "Player 1";
-  playerOName = document.getElementById("playerOName").value || "Player 2";
+canvas.width = 1200; // Set a larger width for the canvas
+canvas.height = 800; // Set a larger height for the canvas
 
-  document.getElementById("playerXNameDisplay").textContent = playerXName;
-  document.getElementById("playerONameDisplay").textContent = playerOName;
+ctx.lineWidth = 5;
+ctx.lineCap = "round";
+ctx.strokeStyle = "black";
 
-  // Hide player name inputs, Let's Play button, and Player 2 name container
-  namesContainer.style.display = "none";
-  playerONameContainer.style.display = "none";
-  letsPlayButton.style.display = "none";
-
-  boardContainer.style.display = "grid";
-  scoresContainer.style.display = "block";
-
-  // Attach click handlers to cells
-  cells.forEach((cell, index) => {
-    cell.addEventListener("click", () => makeMove(index));
-  });
+function startDrawing(event) {
+  isDrawing = true;
+  ctx.beginPath();
+  ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
 }
 
-function makeMove(cellIndex) {
-  if (board[cellIndex] === "" && currentPlayer !== "") {
-    board[cellIndex] = currentPlayer;
-    cells[cellIndex].textContent = currentPlayer;
-
-    // Check for win or tie
-    if (checkWin()) {
-      if (currentPlayer === "X") {
-        playerXScore++;
-        document.getElementById("playerXScore").textContent = playerXScore;
-        setTimeout(() => {
-          showWinMessage(playerXName);
-          resetBoard();
-        }, 500);
-      } else {
-        playerOScore++;
-        document.getElementById("playerOScore").textContent = playerOScore;
-        setTimeout(() => {
-          showWinMessage(playerOName);
-          resetBoard();
-        }, 500);
-      }
-    } else if (checkTie()) {
-      setTimeout(() => {
-        showTieMessage();
-        resetBoard();
-      }, 500);
-    } else {
-      currentPlayer = currentPlayer === "X" ? "O" : "X";
-    }
+function draw(event) {
+  if (!isDrawing) return;
+  if (isErasing) {
+    ctx.globalCompositeOperation = "destination-out"; // Use eraser
+  } else {
+    ctx.globalCompositeOperation = "source-over"; // Use pen or brush
   }
+  ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+  ctx.stroke();
 }
 
-
-function checkWin() {
-  const winCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-
-  for (const combination of winCombinations) {
-    const [a, b, c] = combination;
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      cells[a].style.backgroundColor = "#90ee90"; // Highlight the winning cells
-      cells[b].style.backgroundColor = "#90ee90";
-      cells[c].style.backgroundColor = "#90ee90";
-      return true;
-    }
-  }
-
-  return false;
+function stopDrawing() {
+  isDrawing = false;
+  ctx.closePath();
 }
 
-function checkTie() {
-  return board.every(cell => cell !== "");
-}
-
-function resetBoard() {
-  board = ["", "", "", "", "", "", "", "", ""];
-  currentPlayer = "X";
-  cells.forEach(cell => {
-    cell.textContent = "";
-    cell.style.backgroundColor = "#f9f9f9";
+colors.forEach(color => {
+  color.addEventListener("click", () => {
+    colors.forEach(c => c.classList.remove("selected"));
+    color.classList.add("selected");
+    ctx.strokeStyle = color.style.backgroundColor;
   });
-}
-
-// ... Existing code ...
-
-// Function to show the result modal with a custom message
-function showResultModal(message) {
-  const resultModal = document.getElementById("resultModal");
-  const resultText = document.getElementById("resultText");
-  
-  resultText.textContent = message;
-  resultModal.style.display = "flex";
-}
-
-// Function to reset the board and hide the modal
-document.getElementById("playAgainButton").addEventListener("click", () => {
-  document.getElementById("resultModal").style.display = "none";
-  resetBoard();
 });
 
-// Function to show the win message in the modal
-function showWinMessage(playerName) {
-  const message = `${playerName} wins!`;
-  showResultModal(message);
-}
+tools.forEach(tool => {
+  tool.addEventListener("click", () => {
+    tools.forEach(t => t.classList.remove("selected"));
+    tool.classList.add("selected");
+    isErasing = tool.id === "eraser-tool";
+    
+    if (isErasing) {
+      ctx.lineWidth = 10; // Set line width for eraser
+      ctx.strokeStyle = "white"; // Eraser color
+    } else if (tool.id === "brush-tool") {
+      ctx.lineWidth = 10; // Set a softer line width for brush
+      ctx.strokeStyle = colors[0].style.backgroundColor; // Set default color
+    } else {
+      ctx.lineWidth = 5; // Set a harder line width for pen
+      ctx.strokeStyle = colors[0].style.backgroundColor; // Set default color
+    }
+  });
+});
 
-// Function to show the tie message in the modal
-function showTieMessage() {
-  const message = "It's a tie!";
-  showResultModal(message);
-}
+canvas.addEventListener("mousedown", startDrawing);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("mouseout", stopDrawing);
+
+clearButton.addEventListener("click", () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
